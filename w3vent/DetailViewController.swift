@@ -26,6 +26,16 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func disconnect(_ sender: Any) {
+        guard let session = session else { return }
+        try? client.disconnect(from: session)
+    }
+    
+    @IBAction func close(_ sender: Any) {
+        for session in client.openSessions() {
+            try? client.disconnect(from: session)
+        }
+        dismiss(animated: true)
+    }
 }
 

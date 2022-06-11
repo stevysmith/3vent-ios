@@ -19,10 +19,14 @@ class MainViewController: UIViewController {
         /// **NOTE**: Majority of wallets support universal links that you should normally use in production application
         /// Here deep link provided for integration with server test app only
         let deepLinkUrl = "wc://wc?uri=\(connectionUrl)"
+        
+        // depends what you want
+        let rainbowUrl = URL(string: "https://rnbwapp.com/wc?uri=\(connectionUrl.addingPercentEncoding(withAllowedCharacters: .controlCharacters) ?? "")")
+        let metamaskUrl = URL(string: "https://metamask.app.link/wc?uri=\(connectionUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? "")")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if let url = URL(string: deepLinkUrl), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if let url = URL(string: deepLinkUrl), UIApplication.shared.canOpenURL(rainbowUrl!) {
+                UIApplication.shared.open(rainbowUrl!, options: [:], completionHandler: nil)
             } else {
                 self.handshakeController = HandshakeViewController.create(code: connectionUrl)
                 self.present(self.handshakeController, animated: true)
